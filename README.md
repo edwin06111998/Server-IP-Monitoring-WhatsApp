@@ -38,6 +38,7 @@ Estas son algunas de las características del sistema de monitoreo:
 * Verificar el estado de conexión de antenas UISP.
 * Notificar en tiempo real mediante WhatsApp sobre caída de servidor/antena.
 * Notificar sobre restablecimiento de conexión de servidor/antena.
+* Enviar alerta cada 15 minutos en caso de que el servidor/antena siga caído.
 * Almacenar registro de eventos.
 * Lectura dinámica de direcciones IPs de servidores/antenas.
 * Agregar múltiples destinatarios simultáneos para recibir la alerta.
