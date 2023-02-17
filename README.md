@@ -9,14 +9,11 @@
   Envío de alerta en tiempo real sobre la conexión del servidor.
 </p>
 
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Tabla de contenidos
 
 - [Introducción](#introduction)
-- [Características](#features)
-- [Feedback](#feedback)
+- [Funciones](#features)
+- [Retroalimentación](#feedback)
 - [Contributors](#contributors)
 - [Build Process](#build-process)
 - [Backers](#backers-)
@@ -25,43 +22,35 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Introduction
+## Introducción
 
-[![Build Status](https://img.shields.io/travis/gitpoint/git-point.svg?style=flat-square)](https://travis-ci.org/gitpoint/git-point)
-[![Coveralls](https://img.shields.io/coveralls/github/gitpoint/git-point.svg?style=flat-square)](https://coveralls.io/github/gitpoint/git-point)
-[![All Contributors](https://img.shields.io/badge/all_contributors-73-orange.svg?style=flat-square)](./CONTRIBUTORS.md)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
-[![Gitter chat](https://img.shields.io/badge/chat-on_gitter-008080.svg?style=flat-square)](https://gitter.im/git-point)
+Servicio de alerta de monitoreo de servidores y antenas de energía eléctrica UISP. El sistema está desarrollado en Python, se ejecuta en tiempo real sobre un servidor Linux, envía alertas sobre el estado de conexión del servidor, a través de WhatsApp.
 
-View repository and user information, control your notifications and even manage your issues and pull requests. Built with React Native, GitPoint is one of the most feature-rich unofficial GitHub clients that is 100% free.
-
-**Available for both iOS and Android.**
+**Dispinible para WhatsApp, Telegram o Messenger.**
 
 <p align="center">
-  <img src = "http://i.imgur.com/HowF6aM.png" width=350>
+  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Captura.png" width=700>
 </p>
 
-## Features
+## Funciones
 
-A few of the things you can do with GitPoint:
+Estas son algunas de las características del sistema de monitoreo:
 
-* View user activity feed
-* Communicate on your issue and pull request conversations
-* Close or lock issues
-* Apply labels and assignees
-* Review and merge pull requests
-* Create new issues
-* Star, watch and fork repositories
-* Control your unread and participating notifications
-* Easily search for any user or repository
+* Verificar el estado de conexión de servidores.
+* Verificar el estado de conexión de antenas UISP.
+* Notificar en tiempo real mediante WhatsApp sobre caída de servidor/antena.
+* Notificar sobre restablecimiento de conexión de servidor/antena.
+* Almacenar registro de eventos.
+* Lectura dinámica de direcciones IPs de servidores/antenas.
+* Agregar múltiples destinatarios simultáneos para recibir la alerta.
+* Escalabilidad y posibilidad de implementarse en una interfaz web.
 
 <p align="center">
-  <img src = "http://i.imgur.com/IkSnFRL.png" width=700>
+  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Alerta2.png" width=350>
 </p>
 
 <p align="center">
-  <img src = "http://i.imgur.com/0iorG20.png" width=700>
+  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Alerta.png" width=350>
 </p>
 
 ## Feedback
