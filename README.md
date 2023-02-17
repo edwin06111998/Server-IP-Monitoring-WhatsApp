@@ -14,11 +14,9 @@
 - [Introducción](#introduction)
 - [Funciones](#features)
 - [Retroalimentación](#feedback)
-- [Contributors](#contributors)
-- [Build Process](#build-process)
-- [Backers](#backers-)
-- [Sponsors](#sponsors-)
-- [Acknowledgments](#acknowledgments)
+- [Contribuidores](#contributors)
+- [Proceso de construcción](#build-process)
+- [Contacto](#acknowledgments)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -72,7 +70,7 @@ Este proyecto ha sido desarrollado únicamente por mí (Edwin Veloz).
 - Ingresa las IPs en el archivo ips.txt y los destinatarios en el archivo numbers.txt
 - Ejecuta ping.py y antennas.py
 
-Importante: para ejecutar el código 24/7, puedes implementarlo en un servidor Linux y usar comandos como "crontab -e" para ejecutar el código cada cierto determinado tiempo.
+Importante: para ejecutar el código 24/7, puedes implementarlo en un servidor Linux y usar comandos como "crontab -e" para ejecutar el código cada determinado tiempo.
 
 ## Contacto
 
