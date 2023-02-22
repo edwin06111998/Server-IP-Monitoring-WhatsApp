@@ -1,9 +1,9 @@
-<h1 align="center"> Monitoreo de Servidores </h1> <br>
 <p align="center">
   <a href="https://gitpoint.co/">
-    <img alt="Chatbot" title="Chatbot" src="https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Logo%20Monitereo.png" width="450">
+    <img alt="Chatbot" title="Chatbot" src="https://github.com/edwin06111998/Imagenes/blob/main/Proceso%20Chatbot/Header%20Monitoreo.jpg">
   </a>
 </p>
+<h1 align="center"> Monitoreo de Servidores </h1> <br>
 
 <p align="center">
   Envío de alerta en tiempo real sobre la conexión del servidor.
@@ -43,7 +43,7 @@ Estas son algunas de las características del sistema de monitoreo:
 * Lectura dinámica de direcciones IPs de servidores/antenas.
 * Agregar múltiples destinatarios simultáneos para recibir la alerta.
 * Escalabilidad y posibilidad de implementarse en una interfaz web.
-<hr>
+<h1></h1>
 <p align="center">
   <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Alerta2.png" width=350>
 </p>
