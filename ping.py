@@ -5,19 +5,20 @@ import time
 
 start_time = time.time()
 
-filepath = "repository_path"
+filepath = "/home/edwin/Repositorios/caida_nodos"
+#filepath = "/caida_nodos"
 
-ip_dict = {}
-control_dict = {}
+diccionario_ip = {}
+diccionario_control = {}
 
 with open(f"{filepath}/control.txt") as file:
     dump = file.read()
     dump = dump.splitlines()
 
-# Almacena todas las ips y el status de control.txt en un diccionario clave-valor (ip-status)
+# Almacena todas las ips y el estado de control.txt en un diccionario clave-valor (ip-estado)
 for data in dump:
-    ip,status,time_data = data.split(",")
-    control_dict[ip] = [status, time_data]
+    ip,estado,tiempo = data.split(",")
+    diccionario_control[ip] = [estado, tiempo]
 
 with open(f"{filepath}/ips.txt") as file:
     dump_ips = file.read()
@@ -25,70 +26,73 @@ with open(f"{filepath}/ips.txt") as file:
 
 # Almacena todas las ips de ips.txt en un diccionario clave-valor (nodo-ip)
 for data_ips in dump_ips:
-    ip,server_name = data_ips.split(",")
-    if(ip not in ip_dict):
-        ip_dict[ip] = server_name
+    ip,nodo = data_ips.split(",")
+    if(ip not in diccionario_ip):
+        diccionario_ip[ip] = nodo
 
 def ping_ip (ip):
     res = os.popen(f"ping -c 4 {ip}").read().strip()
     res_list = res.split("\n")
-    percentage = 0
-    reference = res_list.pop()
-    if "packet loss" in reference:
-        reference_list = reference.split(",")
-        reference_list.pop()
-        loss_string = reference_list.pop()
-        percentage = int(loss_string.split("%")[0].strip())
+    porcentaje = 0
+    referencia = res_list.pop()
+    if "packet loss" in referencia:
+        referencia_list = referencia.split(",")
+        referencia_list.pop()
+        loss_string = referencia_list.pop()
+        porcentaje = int(loss_string.split("%")[0].strip())
     else:
-        reference = res_list.pop()
-        reference_list = reference.split(",")
-        reference_list.pop()
-        loss_string = reference_list.pop()
-        percentage = int(loss_string.split("%")[0].strip())
-    return percentage
+        referencia = res_list.pop()
+        referencia_list = referencia.split(",")
+        referencia_list.pop()
+        loss_string = referencia_list.pop()
+        porcentaje = int(loss_string.split("%")[0].strip())
+    return porcentaje
 
-# Hace ping por cada direccion IP y guarda el status en output.txt
-for ip in ip_dict:
-    server_name = ip_dict[ip]
-    hour = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
-    percentage = ping_ip(ip)     
-    if ip not in control_dict:
-            control_dict[ip] = ["up", 0]  
+# Hace ping por cada direccion IP y guarda el estado en output.txt
+for ip in diccionario_ip:
+    nodo = diccionario_ip[ip]
+    hora = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
+    porcentaje = ping_ip(ip)     
+    if ip not in diccionario_control:
+            diccionario_control[ip] = ["activo", 0]  
 
-    if percentage >= 75: 
-        time.sleep(0) # Sleep for 30 seconds
-        percentage = ping_ip(ip)
-        if percentage >= 75: 
-            if control_dict[ip][0] == "up":
-                send_whatsapp_message("servidor_desconectado", server_name, hour)
+    if porcentaje >= 75: 
+        time.sleep(30) # Sleep for 5  seconds
+        porcentaje = ping_ip(ip)
+        if porcentaje >= 75: 
+            if diccionario_control[ip][0] == "activo":
+                send_whatsapp_message("servidor_desconectado", nodo, hora)
                 f = open(f"{filepath}/output.txt", "a")
-                f.write(server_name + " (" + str(ip) + ")" + '\t' + "is DOWN" + '\t' + hour + '\n')
+                f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta CAIDO" + '\t' + hora + '\n')
                 f.close()
-                control_dict[ip] = ["down", 0]
+                diccionario_control[ip] = ["caido", 0]
+                print(hora)
             else:
-                time_data = int(control_dict[ip][1])
-                if(time_data < 3):
-                    control_dict[ip] = ["down", time_data + 1]
+                tiempo = int(diccionario_control[ip][1])
+                if(tiempo < 8):
+                    diccionario_control[ip] = ["caido", tiempo + 1]
                 else:
-                    send_whatsapp_message_("conexion_sigue_perdida", server_name)
+                    send_whatsapp_message_("conexion_sigue_perdida", nodo)
                     f = open(f"{filepath}/output.txt", "a")
-                    f.write(server_name + " (" + str(ip) + ")" + '\t' + "is DOWN" + '\t' + hour + '\n')
+                    f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta CAIDO" + '\t' + hora + '\n')
                     f.close()
-                    control_dict[ip] = ["down", 0]                            
+                    diccionario_control[ip] = ["caido", 0]
+                    print(hora)
     else:
-        if control_dict[ip][0] == "down":
-            send_whatsapp_message("servidor_conectado", server_name, hour)            
+        if diccionario_control[ip][0] == "caido":
+            send_whatsapp_message("servidor_conectado", nodo, hora)            
             f = open(f"{filepath}/output.txt", "a")
-            f.write(server_name + " (" + str(ip) + ")" + '\t' + "is UP" + '\t' + hour + '\n')
+            f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta ACTIVO" + '\t' + hora + '\n')
             f.close()
-        control_dict[ip] = ["up", 0]
+            print(hora)
+        diccionario_control[ip] = ["activo", 0]
 
 with open(f"{filepath}/control.txt", "w") as file:
         pass
 
-for key in control_dict:  
+for key in diccionario_control:  
     f = open(f"{filepath}/control.txt", "a")      
-    f.write(key + "," + str(control_dict[key][0]) + "," + str(control_dict[key][1]) + '\n')
+    f.write(key + "," + str(diccionario_control[key][0]) + "," + str(diccionario_control[key][1]) + '\n')
     f.close()
 
 """
@@ -101,4 +105,3 @@ for key in control_dict:
     with open('output.txt', "w") as file:
         pass
 """
-   

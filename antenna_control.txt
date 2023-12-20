@@ -1,2 +1,0 @@
-PALENQUE,disconnected
-AP-ZONA MAXITEL 2,active
