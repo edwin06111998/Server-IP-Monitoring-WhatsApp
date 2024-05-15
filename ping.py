@@ -1,26 +1,15 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from send_message import*
-from datetime import datetime
+from ping3 import ping
 import time
+import datetime
 
 start_time = time.time()
-
-filepath = "/home/edwin/Repositorios/caida_nodos"
-#filepath = "/caida_nodos"
-
 diccionario_ip = {}
-diccionario_control = {}
 
-with open(f"{filepath}/control.txt") as file:
-    dump = file.read()
-    dump = dump.splitlines()
-
-# Almacena todas las ips y el estado de control.txt en un diccionario clave-valor (ip-estado)
-for data in dump:
-    ip,estado,tiempo = data.split(",")
-    diccionario_control[ip] = [estado, tiempo]
-
-with open(f"{filepath}/ips.txt") as file:
+with open("./ips.txt") as file:
     dump_ips = file.read()
     dump_ips = dump_ips.splitlines()
 
@@ -30,78 +19,34 @@ for data_ips in dump_ips:
     if(ip not in diccionario_ip):
         diccionario_ip[ip] = nodo
 
-def ping_ip (ip):
-    res = os.popen(f"ping -c 4 {ip}").read().strip()
-    res_list = res.split("\n")
-    porcentaje = 0
-    referencia = res_list.pop()
-    if "packet loss" in referencia:
-        referencia_list = referencia.split(",")
-        referencia_list.pop()
-        loss_string = referencia_list.pop()
-        porcentaje = int(loss_string.split("%")[0].strip())
-    else:
-        referencia = res_list.pop()
-        referencia_list = referencia.split(",")
-        referencia_list.pop()
-        loss_string = referencia_list.pop()
-        porcentaje = int(loss_string.split("%")[0].strip())
-    return porcentaje
+ip_addresses = list(diccionario_ip.keys())
 
-# Hace ping por cada direccion IP y guarda el estado en output.txt
-for ip in diccionario_ip:
-    nodo = diccionario_ip[ip]
-    hora = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
-    porcentaje = ping_ip(ip)     
-    if ip not in diccionario_control:
-            diccionario_control[ip] = ["activo", 0]  
+ip_status = {ip: {"down": False, "last_alert_time": 0} for ip in ip_addresses}
 
-    if porcentaje >= 75: 
-        time.sleep(30) # Sleep for 5  seconds
-        porcentaje = ping_ip(ip)
-        if porcentaje >= 75: 
-            if diccionario_control[ip][0] == "activo":
-                send_whatsapp_message("servidor_desconectado", nodo, hora)
-                f = open(f"{filepath}/output.txt", "a")
-                f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta CAIDO" + '\t' + hora + '\n')
-                f.close()
-                diccionario_control[ip] = ["caido", 0]
-                print(hora)
+while True:
+    current_time = time.time()
+    
+    for ip in ip_addresses:
+        response = ping(ip)
+        
+        if not response:
+            # La IP está caída
+            hora = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
+            if not ip_status[ip]["down"]:
+                # Cambiar el estado a caído
+                ip_status[ip]["down"] = True
+                ip_status[ip]["last_alert_time"] = current_time
+                send_whatsapp_message(os.getenv('TEMPLATE_SERVIDOR_CAIDO'), nodo, hora)
             else:
-                tiempo = int(diccionario_control[ip][1])
-                if(tiempo < 8):
-                    diccionario_control[ip] = ["caido", tiempo + 1]
-                else:
-                    send_whatsapp_message_("conexion_sigue_perdida", nodo)
-                    f = open(f"{filepath}/output.txt", "a")
-                    f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta CAIDO" + '\t' + hora + '\n')
-                    f.close()
-                    diccionario_control[ip] = ["caido", 0]
-                    print(hora)
-    else:
-        if diccionario_control[ip][0] == "caido":
-            send_whatsapp_message("servidor_conectado", nodo, hora)            
-            f = open(f"{filepath}/output.txt", "a")
-            f.write(nodo + " (" + str(ip) + ")" + '\t' + "esta ACTIVO" + '\t' + hora + '\n')
-            f.close()
-            print(hora)
-        diccionario_control[ip] = ["activo", 0]
+                # La IP sigue caída
+                time_since_last_alert = current_time - ip_status[ip]["last_alert_time"]
+                if time_since_last_alert >= int(os.getenv('ALERT_INTERVAL')):
+                    ip_status[ip]["last_alert_time"] = current_time
+                    send_whatsapp_message_(os.getenv('TEMPLATE_SERVIDOR_SIGUE_CAIDO'), nodo, hora)
+        else:
+            # La IP está arriba
+            ip_status[ip]["down"] = False
+            ip_status[ip]["last_alert_time"] = 0
+            send_whatsapp_message(os.getenv('TEMPLATE_SERVIDOR_CONECTADO'), nodo, hora) 
 
-with open(f"{filepath}/control.txt", "w") as file:
-        pass
-
-for key in diccionario_control:  
-    f = open(f"{filepath}/control.txt", "a")      
-    f.write(key + "," + str(diccionario_control[key][0]) + "," + str(diccionario_control[key][1]) + '\n')
-    f.close()
-
-"""
-# Abre el archivo output.txt
-    with open('output.txt') as file:
-        output = file.read()
-        print(output)
-
- # Elimina contenido de output.txt
-    with open('output.txt', "w") as file:
-        pass
-"""
+    time.sleep(int(os.getenv('CHECK_INTERVAL')))

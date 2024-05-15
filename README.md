@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="https://gitpoint.co/">
-    <img alt="Chatbot" title="Chatbot" src="https://github.com/edwin06111998/Imagenes/blob/main/Proceso%20Chatbot/Header%20Monitoreo.jpg">
-  </a>
-</p>
+![Monitoreo de Servidores](/images/cover.png)
 <h1 align="center"> Monitoreo de Servidores </h1> <br>
 
 <p align="center">
@@ -26,9 +22,7 @@ Servicio de alerta de monitoreo de servidores y antenas de energía eléctrica U
 
 **Dispinible para WhatsApp, Telegram o Messenger.**
 
-<p align="center">
-  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Captura.png" width=700>
-</p>
+![Monitoreo de Servidores](/images/Captura.png)
 
 ## Funciones
 
@@ -44,13 +38,10 @@ Estas son algunas de las características del sistema de monitoreo:
 * Agregar múltiples destinatarios simultáneos para recibir la alerta.
 * Escalabilidad y posibilidad de implementarse en una interfaz web.
 <h1></h1>
-<p align="center">
-  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Alerta2.png" width=350>
-</p>
 
-<p align="center">
-  <img src = "https://raw.githubusercontent.com/edwin06111998/monitoreo_servidores_alerta/main/images/Alerta.png" width=350>
-</p>
+![Monitoreo de Servidores](/images/Alerta2.png)
+
+![Monitoreo de Servidores](/images/Alerta.png)
 
 ## Retroalimentación
 
@@ -62,16 +53,13 @@ Este proyecto ha sido desarrollado únicamente por mí (Edwin Veloz).
 
 ## Proceso de construcción
 
-- Clona o descarga el repositorio
-- Crea una aplicación en Facebook para usar la API de WhatsApp
+- Clona el repositorio
+- Crea una aplicación en Facebook para usar la API de WhatsApp Business
 - Obtén un token permanente y el ID de la aplicación
-- Crea las plantillas en Facebook para los mensajes de alerta
-- Ingresa el token y ID en el archivo send_message.py
-- Modifica el "filepath" ingresando la ruta del repositorio en los archivos ping.py y antennas.py
+- Crea las 3 plantillas en Facebook para los mensajes de alerta
+- Ingresa las variables de entorno descritas en el archivo .env
 - Ingresa las IPs en el archivo ips.txt y los destinatarios en el archivo numbers.txt
-- Ejecuta ping.py y antennas.py
-
-Importante: para ejecutar el código 24/7, puedes implementarlo en un servidor Linux y usar comandos como "crontab -e" para ejecutar el código cada determinado tiempo.
+- Ejecuta ping.py
 
 ## Contacto
 
